@@ -59,3 +59,16 @@ typings/
 
 # next.js build output
 .next
+
+bower_components
+.sass-cache
+app/assets/rendered
+npm-debug.log
+newrelic_agent.log
+dist/
+coverage/
+.gulp-cache
+.nyc_output
+debianpkg/
+.postinst
+geo.mmdb
