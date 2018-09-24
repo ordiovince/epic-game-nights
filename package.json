@@ -8,7 +8,7 @@
         "build": "npm run sass",
         "copy": "ncp app dist",
         "sass": "node-sass --output-style compressed app/assets/scss/app.scss app/assets/rendered/style.css",
-        "start": "node app/index.js",
+        "start": "node app/index.js && NODE_ENV=production",
         "dev": "nodemon --inspect=127.0.0.1:9230 app/index.js",
         "preversion": "npm run test",
         "version": "git add .",
