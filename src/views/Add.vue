@@ -85,6 +85,8 @@ export default {
     onSubmit (evt) {
       evt.preventDefault();
 
+      this.form.minPlayers = Number(this.form.minPlayers);
+      this.form.maxPlayers = Number(this.form.maxPlayers);
       Firebase.db.collection("games").add(this.form)
         .then(function(docRef) {
           console.log("Document written with ID: ", docRef.id);
