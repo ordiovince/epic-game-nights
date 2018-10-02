@@ -1,8 +1,16 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Jeux</router-link>
-    </div>
+    <b-navbar id="nav" toggleable="md" type="dark" variant="info">
+      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+      <b-navbar-brand><router-link to="/" class="brand">Epic Game Nights</router-link></b-navbar-brand>
+      <b-collapse is-nav id="nav_collapse">
+        <b-navbar-nav>
+          <b-nav-item><router-link to="/">Accueil</router-link></b-nav-item>
+          <b-nav-item><router-link to="/add">Ajouter un jeu</router-link></b-nav-item>
+          <b-nav-item><router-link to="/create-night">Prévoir une Game Night</router-link></b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
     <router-view/>
   </div>
 </template>
@@ -16,12 +24,10 @@
   color: #2c3e50;
 }
 #nav {
-  padding: 30px;
   a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
+    color: #ffffff;
+    &.router-link-exact-active:not(.brand) {
+      color: #b5dac9;
     }
   }
 }

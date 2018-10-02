@@ -19,6 +19,7 @@ db.settings({
 
 export default {
   name: 'Firebase',
-  db
+  db,
+  const: firebase.firestore
 }
 </script>
