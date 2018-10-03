@@ -16,6 +16,7 @@
     "chart.js": "^2.7.2",
     "firebase": "^5.5.1",
     "moment": "^2.22.2",
+    "v-scroll-to-top": "^1.0.2",
     "vue": "^2.5.17",
     "vue-chartjs": "^3.4.0",
     "vue-router": "^3.0.1",

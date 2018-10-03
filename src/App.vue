@@ -12,10 +12,14 @@
       </b-collapse>
     </b-navbar>
     <router-view/>
+    <v-scroll-to-top></v-scroll-to-top>
   </div>
 </template>
 
 <style lang="scss">
+body{
+  overflow-x: hidden;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

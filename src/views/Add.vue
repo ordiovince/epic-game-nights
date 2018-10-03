@@ -14,7 +14,7 @@
         </b-form-input>
       </b-form-group>
       <b-list-group>
-        <b-list-group-item v-for="(result, index) in results" :key="index" button @click="gameSelected(result.id, result.name)" style="cursor: pointer;">
+        <b-list-group-item v-for="(result, index) in results" :key="index" button @click="gameSelected(result.id, result.name)" style="cursor: pointer; z-index: 99;">
           {{ result.name }} ({{ result.yearPublished }})
         </b-list-group-item>
       </b-list-group>
@@ -102,8 +102,8 @@ export default {
     return {
       form: {
         name: '',
-        minPlayers: 0,
-        maxPlayers: 0,
+        minPlayers: null,
+        maxPlayers: null,
         isPlayableInTeams: false,
         averagePlayTime: '',
         link: '',
@@ -211,5 +211,6 @@ section {
 .list-group {
   position: absolute;
   margin-top: -17px;
+  max-width: 28rem;
 }
 </style>

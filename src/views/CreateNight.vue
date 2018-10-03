@@ -40,7 +40,7 @@ export default {
     return {
       form: {
         date: new Date(),
-        numberOfPlayers: 0
+        numberOfPlayers: null
       }
     }
   },
