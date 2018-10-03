@@ -1,5 +1,6 @@
 <template>
   <div class="card game">
+    <img :src="game.thumbnailLink" class="card-img-top" />
     <div class="card-body">
       <h5 class="card-title">{{ game.name }}</h5>
       <p class="card-text">Nombre de joueurs : {{ game.minPlayers }}-{{ game.maxPlayers }}</p>
@@ -26,5 +27,11 @@ export default {
 .game {
   min-width: 20rem;
   margin: 1rem;
+
+  .card-img-top {
+      height: 10rem;
+      width: 10rem;
+      margin: 1rem auto;
+  }
 }
 </style>

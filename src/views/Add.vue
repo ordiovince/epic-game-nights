@@ -3,6 +3,21 @@
     <section>
       <h1>Ajouter un jeu</h1>
 
+      <b-form-group id="searchGroup"
+                    label="Rechercher un jeu"
+                    label-for="search">
+        <b-form-input id="search"
+                      type="text"
+                      required
+                      placeholder="Tapper une recherche ici"
+                      @input="search">
+        </b-form-input>
+      </b-form-group>
+      <b-list-group>
+        <b-list-group-item v-for="(result, index) in results" :key="index" button @click="gameSelected(result.id, result.name)" style="cursor: pointer;">
+          {{ result.name }} ({{ result.yearPublished }})
+        </b-list-group-item>
+      </b-list-group>
       <b-form @submit="onSubmit" v-if="show">
         <b-form-group id="nameGroup"
                       label="Nom"
@@ -60,6 +75,16 @@
                         placeholder="https://">
           </b-form-input>
         </b-form-group>
+        <b-form-group id="thumbnailLinkGroup"
+                      label="Lien vers l'image"
+                      label-for="thumbnailLink">
+          <b-form-input id="thumbnailLink"
+                        type="text"
+                        required
+                        v-model="form.thumbnailLink"
+                        placeholder="https://">
+          </b-form-input>
+        </b-form-group>
         <b-button type="submit" variant="primary">Ajouter</b-button>
       </b-form>
     </section>
@@ -69,6 +94,7 @@
 <script>
 // @ is an alias to /src
 import Firebase from '@/services/Firebase.vue'
+var parseString = require('xml2js').parseString;
 
 export default {
   name: 'add',
@@ -80,10 +106,15 @@ export default {
         maxPlayers: 0,
         isPlayableInTeams: false,
         averagePlayTime: '',
-        link: ''
+        link: '',
+        thumbnailLink: ''
       },
+      results: [],
+      request: undefined,
       show: true
     }
+  },
+  created() {
   },
   methods: {
     onSubmit (evt) {
@@ -100,6 +131,69 @@ export default {
           console.error("Error adding document: ", error);
           alert("Error adding document: ".error);
         });
+    },
+    search (search) {
+      if (this.request) {
+        this.request.abort();
+      }
+      if (search === "") {
+        this.results = [];
+        return;
+      }
+
+      this.request = new XMLHttpRequest();
+      this.request.open("GET", "https://www.boardgamegeek.com/xmlapi2/search?type=boardgame&query=" + search, true);
+      this.request.onreadystatechange = function() {
+        if (this.request.readyState == 4 && this.request.status == 200)
+        {
+          var doc = this.request.responseText;
+          parseString(doc, function(err, result) {
+            let results = [];
+            for (let i = 0; i < result.items.item.length; i++) {
+              results.push({
+                id: result.items.item[i].$.id,
+                name: result.items.item[i].name[0].$.value,
+                yearPublished: result.items.item[i].yearpublished ? result.items.item[i].yearpublished[0].$.value : undefined
+              })
+            }
+            if(results.length !== this.results.length) {
+              this.results = results;
+            }
+            for(var i = results.length; i--;) {
+              if(results[i] !== this.results[i]) {
+                this.results = results;
+              }
+            }
+          }.bind(this));
+        }
+      }.bind(this);
+      this.request.send(null);
+    },
+    gameSelected (gameId, gameName) {
+      this.results = [];
+      if (this.request) {
+        this.request.abort();
+      }
+
+      this.request = new XMLHttpRequest();
+      this.request.open("GET", "https://www.boardgamegeek.com/xmlapi2/thing?type=boardgame&id=" + gameId, true);
+      this.request.onreadystatechange = function() {
+        if (this.request.readyState == 4 && this.request.status == 200)
+        {
+          var doc = this.request.responseText;
+          parseString(doc, function(err, result) {
+            this.form.name = gameName;
+            this.form.minPlayers = result.items.item[0].minplayers[0].$.value;
+            this.form.maxPlayers = result.items.item[0].maxplayers[0].$.value;
+            let minPlayingTime = result.items.item[0].minplaytime[0].$.value;
+            let maxPlayingTime = result.items.item[0].maxplaytime[0].$.value;
+            this.form.averagePlayTime = minPlayingTime === maxPlayingTime ? minPlayingTime : minPlayingTime + "-" + maxPlayingTime;
+            this.form.link = "https://boardgamegeek.com/boardgame/" + gameId;
+            this.form.thumbnailLink = result.items.item[0].thumbnail[0];
+          }.bind(this));
+        }
+      }.bind(this);
+      this.request.send(null);
     }
   }
 }
@@ -113,5 +207,9 @@ section {
     margin: auto;
     padding: 0 1rem;
     max-width: 30rem;
+}
+.list-group {
+  position: absolute;
+  margin-top: -17px;
 }
 </style>
