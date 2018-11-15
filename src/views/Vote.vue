@@ -6,9 +6,11 @@
 
       <div class="vote-container">
         <b-form @submit="onSubmit">
-          <b-table striped hover :items="items" :fields="fields" bordered>
+          <b-table striped hover :items="items" :fields="fields" bordered responsive>
             <template slot="name" slot-scope="data">
               <a href="javascript:void(0)" v-b-modal="'modal-' + data.item.id">{{ data.item.name }}</a>
+              <br v-if="data.item.owners.length > 0" />
+              <b-badge pill v-for="(owner, index) in data.item.owners" :key="index">{{ owner }}</b-badge>
             </template>
             <template slot="score" slot-scope="data">
               <b-form-radio-group
@@ -154,6 +156,7 @@ export default {
                   this.items.push({
                     id: game.id,
                     name: game.name,
+                    owners: game.owners ? game.owners : [],
                     score: [
                       { text: "1⭐", value: 1 },
                       { text: "2⭐", value: 2 },
@@ -181,5 +184,9 @@ section {
 .vote-container {
     max-width: 40rem;
     margin: auto;
+}
+
+td {
+    vertical-align: middle !important;
 }
 </style>

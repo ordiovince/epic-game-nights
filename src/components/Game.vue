@@ -6,6 +6,11 @@
       <p class="card-text">Nombre de joueurs : {{ game.minPlayers }}-{{ game.maxPlayers }}</p>
       <p class="card-text">Jouable en équipe : {{ game.isPlayableInTeams ? "oui" : "non" }}</p>
       <p class="card-text">Temps de jeu moyen : {{ game.averagePlayTime }} min</p>
+      <p class="card-text">
+        Propriétaires :
+        <br />
+        <b-badge pill v-for="(owner, index) in game.owners" :key="index">{{ owner }}</b-badge>
+      </p>
     </div>
     <div class="card-footer">
       <a :href="game.link" class="card-link" target="_blank"><small>Lien vers GameBoardGeek</small></a>

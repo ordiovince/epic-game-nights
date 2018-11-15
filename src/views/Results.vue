@@ -15,14 +15,21 @@
       </section>
       <section>
         <div class="results-container">
-          <b-table striped hover :items="items" :fields="fields" sortBy="score" :sortDesc="true" bordered>
+          <b-table striped hover :items="items" :fields="fields" sortBy="score" :sortDesc="true" bordered responsive>
             <template slot="name" slot-scope="data">
-              <a href="javascript:void(0)" v-b-modal="'modal-' + data.item.id">{{ data.item.name }}</a>
+              <a href="javascript:void(0)" @click="showModal(data.item.id)">{{ data.item.name }}</a>
+              <br v-if="data.item.owners.length > 0" />
+              <b-badge pill v-for="(owner, index) in data.item.owners" :key="index">{{ owner }}</b-badge>
             </template>
           </b-table>
         </div>
       </section>
     </div>
+
+    <!-- Modal Component -->
+    <b-modal v-for="(game, index) in games" :key="index" :game="game" :ref="'modal-' + game.id" :title="game.name" hide-header ok-only lazy>
+      <Game :game="game" />
+    </b-modal>
   </div>
 </template>
 
@@ -51,6 +58,7 @@ export default {
       night: null,
       games: [],
       items: [],
+      modal: {},
       fields:[
         { key: 'name', label: "Jeu", sortable: true },
         { key: 'score', label: "Score", sortable: true }
@@ -68,6 +76,9 @@ export default {
     '$route': 'fetchData'
   },
   methods: {
+    showModal (id) {
+      this.$refs['modal-' + id][0].show();
+    },
     fetchData () {
 
       var id = this.$route.params.id;
@@ -102,8 +113,6 @@ export default {
               score.game.get().then((doc) => {
                 let game = doc.data();
                 game.id = doc.id;
-                
-                this.games.push(game);
 
                 if (score.score > 0) {
                   if (this.chartData.labels.indexOf(game.name) === -1) {
@@ -118,10 +127,13 @@ export default {
                 }
 
                 if (votedGames.indexOf(game.id) === -1) {
+                  this.games.push(game);
                   votedGames.push(game.id);
+                  this.modal[game.id] = false;
                   this.items.push({
                     id: game.id,
                     name: game.name,
+                    owners: game.owners ? game.owners : [],
                     score: 0
                   });
                 }

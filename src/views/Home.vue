@@ -31,7 +31,16 @@
           </b-card-group>
         </b-tab>
         <b-tab title="Vue en liste" title-item-class="mx-auto">
-          <b-table striped hover :items="games" :fields="fields" sortBy="name">
+          <b-input-group class="search">
+            <b-form-input v-model="filter" placeholder="Rechercher..." />
+            <b-input-group-append>
+              <b-btn :disabled="!filter" @click="filter = ''">Effacer</b-btn>
+            </b-input-group-append>
+          </b-input-group>
+          <b-table striped hover :items="games" :fields="fields" sortBy="name" :filter="filter" responsive>
+            <template slot="owners" slot-scope="data">
+              <b-badge pill v-for="(owner, index) in data.item.owners" :key="index" @click="filter = owner">{{ owner }}</b-badge>
+            </template>
             <template slot="isPlayableInTeams" slot-scope="data">
               {{ data.item.isPlayableInTeams ? "oui" : "non" }}
             </template>
@@ -39,7 +48,7 @@
               {{ data.item.averagePlayTime }} min
             </template>
             <template slot="link" slot-scope="data">
-              <a :href="data.item.link">Lien vers GameBoardGeek</a>
+              <a :href="data.item.link" target="_blank">Lien vers GameBoardGeek</a>
             </template>
           </b-table>
         </b-tab>
@@ -103,13 +112,15 @@ export default {
       nights: [],
       fields:[
         { key: 'name', label: "Nom", sortable: true },
+        { key: 'owners', label: "Propriétaires", sortable: true },
         { key: 'minPlayers', label: "Nombre de joueurs minimum", sortable: true },
         { key: 'maxPlayers', label: "Nombre de joueurs maximum", sortable: true },
         { key: 'isPlayableInTeams', label: "Jouable en équipe ?", sortable: true },
         { key: 'averagePlayTime', label: "Temps moyen de jeu", sortable: true },
         { key: 'link', label: "Lien", sortable: false }
       ],
-      selectedNight: null
+      selectedNight: null,
+      filter: null
     };
   },
   created () {
@@ -137,7 +148,7 @@ export default {
       });
 
       this.nights = [];
-      Firebase.db.collection("nights").where("date", ">=", new Date()).get().then((querySnapshot) => {
+      Firebase.db.collection("nights").where("date", ">=", new Moment(new Date()).add(-1, 'days').toDate()).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           let night = doc.data();
           night.id = doc.id;
@@ -185,7 +196,14 @@ section {
   margin: 1rem;
 }
 .nights {
-    margin: auto;
-    max-width: 30rem;
+  margin: auto;
+  max-width: 30rem;
+}
+.input-group.search {
+  margin: 1rem auto;
+  max-width: 20rem;
+}
+.table-responsive .badge-pill {
+  cursor: pointer;
 }
 </style>

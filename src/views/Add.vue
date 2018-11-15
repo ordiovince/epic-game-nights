@@ -29,6 +29,16 @@
                         placeholder="Nom">
           </b-form-input>
         </b-form-group>
+        <b-form-group id="ownersGroup"
+                      label="Propriétaires"
+                      label-for="owners">
+          <b-form-input id="owners"
+                        type="text"
+                        required
+                        v-model="form.owners"
+                        placeholder="VOR,CGE">
+          </b-form-input>
+        </b-form-group>
         <b-form-group id="minPlayersGroup"
                       label="Nombre de joueurs minimum"
                       label-for="minPlayers">
@@ -107,7 +117,8 @@ export default {
         isPlayableInTeams: false,
         averagePlayTime: '',
         link: '',
-        thumbnailLink: ''
+        thumbnailLink: '',
+        owners: ''
       },
       results: [],
       request: undefined,
@@ -122,6 +133,7 @@ export default {
 
       this.form.minPlayers = Number(this.form.minPlayers);
       this.form.maxPlayers = Number(this.form.maxPlayers);
+      this.form.owners = this.form.owners.split(",");
       Firebase.db.collection("games").add(this.form)
         .then((docRef) => {
           console.log("Document written with ID: ", docRef.id);
