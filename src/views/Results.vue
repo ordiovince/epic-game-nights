@@ -152,11 +152,11 @@ export default {
 
 <style lang="scss">
 section {
-    margin: 2rem 0;
+  margin: 2rem 0;
 }
 
 .results-container {
-    max-width: 40rem;
-    margin: auto;
+  max-width: 40rem;
+  margin: auto;
 }
 </style>

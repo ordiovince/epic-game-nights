@@ -186,7 +186,7 @@ export default {
 
 <style lang="scss">
 section {
-    margin: 2rem 0;
+  margin: 2rem 0;
 }
 .game-list {
   padding: 0 1rem;

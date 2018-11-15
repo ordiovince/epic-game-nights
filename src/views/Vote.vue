@@ -178,15 +178,15 @@ export default {
 
 <style lang="scss">
 section {
-    margin: 2rem 0;
+  margin: 2rem 0;
 }
 
 .vote-container {
-    max-width: 40rem;
-    margin: auto;
+  max-width: 40rem;
+  margin: auto;
 }
 
 td {
-    vertical-align: middle !important;
+  vertical-align: middle !important;
 }
 </style>

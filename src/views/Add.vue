@@ -94,6 +94,7 @@
                         v-model="form.thumbnailLink"
                         placeholder="https://">
           </b-form-input>
+          <img :src="form.thumbnailLink" class="game-img" />
         </b-form-group>
         <b-button type="submit" variant="primary">Ajouter</b-button>
       </b-form>
@@ -213,16 +214,22 @@ export default {
 
 <style lang="scss">
 section {
-    margin: 2rem 0;
+  margin: 2rem 0;
 }
 .add {
-    margin: auto;
-    padding: 0 1rem;
-    max-width: 30rem;
+  margin: auto;
+  padding: 0 1rem;
+  max-width: 30rem;
 }
 .list-group {
   position: absolute;
   margin-top: -17px;
   max-width: 28rem;
+}
+
+.game-img {
+  height: 10rem;
+  width: 10rem;
+  margin: 1rem auto;
 }
 </style>

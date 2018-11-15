@@ -66,11 +66,11 @@ export default {
 
 <style lang="scss">
 section {
-    margin: 2rem 0;
+  margin: 2rem 0;
 }
 .add {
-    margin: auto;
-    padding: 0 1rem;
-    max-width: 30rem;
+  margin: auto;
+  padding: 0 1rem;
+  max-width: 30rem;
 }
 </style>

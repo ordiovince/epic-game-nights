@@ -34,9 +34,9 @@ export default {
   margin: 1rem;
 
   .card-img-top {
-      height: 10rem;
-      width: 10rem;
-      margin: 1rem auto;
+    height: 10rem;
+    width: 10rem;
+    margin: 1rem auto;
   }
 }
 </style>
